@@ -43,7 +43,7 @@ python-versions = "*"
 
 [[package]]
 name = "donkeycar"
-version = "4.3.0"
+version = "4.2.1"
 description = ""
 category = "main"
 optional = false
@@ -66,8 +66,8 @@ tornado = "*"
 typing_extensions = "*"
 
 [package.extras]
-pi = ["picamera", "adafruit-pca9685", "adafruit-circuitpython-lis3dh", "adafruit-circuitpython-ssd1306", "rpi.gpio", "pyserial"]
-nano = ["adafruit-pca9685", "adafruit-circuitpython-lis3dh", "adafruit-circuitpython-ssd1306", "rpi.gpio"]
+pi = ["picamera", "adafruit-pca9685", "adafruit-ssd1306", "rpi.gpio", "pyserial"]
+nano = ["adafruit-pca9685", "adafruit-ssd1306", "rpi.gpio"]
 pc = ["matplotlib", "imgaug", "kivy"]
 dev = ["pytest", "pytest-cov", "responses", "mypy"]
 ci = ["codecov"]
@@ -76,8 +76,10 @@ torch = ["pytorch (>=1.7.1)", "torchvision", "torchaudio"]
 mm1 = ["pyserial"]
 
 [package.source]
-type = "directory"
-url = "donkeycar"
+type = "git"
+url = "https://github.com/autorope/donkeycar"
+reference = "master"
+resolved_reference = "81c2ea397695790c370669ce57988c403f7cf7ea"
 
 [[package]]
 name = "gym"
@@ -123,8 +125,10 @@ docs = ["sphinx", "sphinx-autobuild", "sphinx-rtd-theme", "sphinxcontrib.spellin
 tests = ["pytest", "pytest-mock", "pytest-cov", "pytest-env", "pytest-xdist", "pytype", "flake8 (>=3.8)", "isort (>=5.0)", "black"]
 
 [package.source]
-type = "directory"
-url = "gym-donkeycar"
+type = "git"
+url = "https://github.com/tawnkramer/gym-donkeycar"
+reference = "master"
+resolved_reference = "cc723d19491b14b3ce9e9614d693ff7fdacca8c9"
 
 [[package]]
 name = "h5py"
@@ -317,7 +321,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "e6fb18e808a0b88dbcdbc13ed22493a7302ed8909b4e8725a72a15718952be32"
+content-hash = "f4cd15b514711e6fb9ba9909fafdaa3829b57623cda415a0b240436af9b91a25"
 
 [metadata.files]
 cached-property = [
