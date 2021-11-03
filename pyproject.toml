@@ -6,8 +6,8 @@ authors = ["Alpaca Racing"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-donkeycar = {path = "donkeycar"}
-gym-donkeycar = {path = "gym-donkeycar"}
+donkeycar = {git = "https://github.com/autorope/donkeycar", branch = "master" }
+gym-donkeycar = {git = "https://github.com/tawnkramer/gym-donkeycar", branch = "master" }
 
 [tool.poetry.dev-dependencies]
 
