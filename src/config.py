@@ -17,8 +17,8 @@ import os
 
 #PATHS
 CAR_PATH = PACKAGE_PATH = os.path.dirname(os.path.realpath(__file__))
-DATA_PATH = os.path.join(CAR_PATH, 'data')
-MODELS_PATH = os.path.join(CAR_PATH, 'models')
+DATA_PATH = "data"
+MODELS_PATH = "models"
 
 #VEHICLE
 DRIVE_LOOP_HZ = 20      # the vehicle loop will pause if faster than this speed.
