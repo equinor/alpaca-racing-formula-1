@@ -5,10 +5,7 @@ Usage:
 Options:
     -h --help          Show this screen.    
 """
-import os
-import time
 
-from docopt import docopt
 import numpy as np
 import cv2
 from simple_pid import PID
