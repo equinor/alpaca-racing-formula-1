@@ -48,17 +48,17 @@ class LineFollower:
 
         # make a mask of the colors in our range we are looking for
         mask = cv2.inRange(img_hsv, self.color_thr_low, self.color_thr_hi)
-        """
+        
         for i in range(mask.shape[0]):
             for j in reversed(range(1, mask.shape[1] // 2)):
                 mask[i, j - 1] = max(mask[i, j], mask[i, j - 1])
 
             for j in range(1 + cam_img.shape[1] // 2, cam_img.shape[1]):
                 mask[i, j] = max(mask[i, j], mask[i, j - 1])
-        """
+        
         # which index of the range has the highest amount of yellow?
         hist = np.sum(mask, axis=0)
-        max_yellow = np.argmin(hist)
+        max_yellow = np.argmax(hist)
 
         return max_yellow, hist[max_yellow], mask
 
