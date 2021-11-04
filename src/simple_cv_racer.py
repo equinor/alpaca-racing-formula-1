@@ -12,6 +12,7 @@ from simple_pid import PID
 
 import donkeycar as dk
 from donkeycar.parts.datastore import TubHandler
+from scipy.ndimage import convolve
 
 
 class LineFollower:
@@ -26,10 +27,10 @@ class LineFollower:
     def __init__(self):
         self.vert_scan_y = 60   # num pixels from the top to start horiz scan
         self.vert_scan_height = 10 # num pixels high to grab from horiz scan
-        self.color_thr_low = np.asarray((0, 50, 50)) # hsv dark yellow
-        self.color_thr_hi = np.asarray((50, 255, 255)) # hsv light yellow
+        self.color_thr_low = np.asarray((190, 190, 190)) # hsv dark yellow
+        self.color_thr_hi = np.asarray((255, 255, 255)) # hsv light yellow
         self.target_pixel = None # of the N slots above, which is the ideal relationship target
-        self.steering = 0.0 # from -1 to 1
+        self.steering = 0.5 # from -1 to 1
         self.throttle = 0.15 # from -1 to 1
         self.recording = False # Set to true if desired to save camera frames
         self.delta_th = 0.1 # how much to change throttle when off
@@ -50,14 +51,21 @@ class LineFollower:
         scan_line = cam_img[iSlice : iSlice + self.vert_scan_height, :, :]
 
         # convert to HSV color space
-        img_hsv = cv2.cvtColor(scan_line, cv2.COLOR_RGB2HSV)
+        img_hsv = scan_line # cv2.cvtColor(scan_line, cv2.COLOR_RGB2RGB)
 
         # make a mask of the colors in our range we are looking for
         mask = cv2.inRange(img_hsv, self.color_thr_low, self.color_thr_hi)
+        """
+        for i in range(mask.shape[0]):
+            for j in reversed(range(1, mask.shape[1] // 2)):
+                mask[i, j - 1] = max(mask[i, j], mask[i, j - 1])
 
+            for j in range(1 + cam_img.shape[1] // 2, cam_img.shape[1]):
+                mask[i, j] = max(mask[i, j], mask[i, j - 1])
+        """
         # which index of the range has the highest amount of yellow?
         hist = np.sum(mask, axis=0)
-        max_yellow = np.argmax(hist)
+        max_yellow = np.argmin(hist)
 
         return max_yellow, hist[max_yellow], mask
 
@@ -68,8 +76,19 @@ class LineFollower:
         input: cam_image, an RGB numpy array
         output: steering, throttle, and recording flag
         '''
+        convkernel = np.ones((3, 3, 3)) / 27.
+        # convkernelß[:, :, 2] *= 2
+
+        # np.array([[1/9, 1/9, 1/9],[1/9, 1/9, 1/9],[1/9, 1/9, 1/9]])
+        # cam_img[:, :, 0] = convolve(cam_img[:, :, 0], convkernel)
+        # cam_img[:, :, 1] = convolve(cam_img[:, :, 1], convkernel)
+        # cam_img[:, :, 2] = convolve(cam_img[:, :, 2], convkernel)
+
+        # cam_img = convolve(cam_img, convkernel)
+
+        
         max_yellow, confidense, mask = self.get_i_color(cam_img)
-        conf_thresh = 0.001
+        conf_thresh = 0.01
         
         if self.target_pixel is None:
             # Use the first run of get_i_color to set our relationship with the yellow line.
@@ -123,6 +142,9 @@ class LineFollower:
         for s in display_str:
             cv2.putText(img, s, color=(0,255,255), org=(x,y), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4)
             y += 10
+
+
+        cv2.imwrite('test_image.png', mask)
 
         cv2.namedWindow('image', cv2.WINDOW_NORMAL)
         cv2.imshow("image", img)
