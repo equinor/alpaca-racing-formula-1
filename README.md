@@ -15,13 +15,21 @@ This project requires python `3.7`. You can install this using `pyenv`.
 Create the car config files by running in the project folder:
 
 ```
-donkey createcar mysim
+donkey createcar --path mysim
 ```
 
-Navigate to the mysim folder and open `config.py`. In this file add the following lines:
+Navigate to the mysim folder and open `myconfig.py`. In this file uncomment the following lines:
 
 ```
 DONKEY_GYM = True
 DONKEY_SIM_PATH = "/home/<user-name>/path/to/donkey_sim_file"
 DONKEY_GYM_ENV_NAME = "donkey-generated-track-v0"
+```
+
+#### Permission denied for the simulator on Mac
+Navigate to the simulator file location and run:
+
+```
+sudo chmod -R 755 donkey_sim.app
+sudo xattr -dr com.apple.quarantine donkey_sim.app
 ```
