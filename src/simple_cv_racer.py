@@ -1,11 +1,4 @@
 #!/usr/bin/env python3
-"""
-Usage:
-    simple_cv_racer.py --name=your_name
-Options:
-    -h --help          Show this screen.    
-"""
-
 import numpy as np
 import cv2
 from simple_pid import PID
@@ -130,6 +123,12 @@ class LineFollower:
         img[iSlice : iSlice + self.vert_scan_height, :, :] = mask_exp
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
+        scale_percent = 400 # percent of original size
+        width = int(img.shape[1] * scale_percent / 100)
+        height = int(img.shape[0] * scale_percent / 100)
+        dim = (width, height)
+        img = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
+
         display_str = []
         display_str.append("STEERING:{:.1f}".format(self.steering))
         display_str.append("THROTTLE:{:.2f}".format(self.throttle))
@@ -147,8 +146,9 @@ class LineFollower:
         cv2.imwrite('test_image.png', mask)
 
         cv2.namedWindow('image', cv2.WINDOW_NORMAL)
+        cv2.setWindowProperty("image", cv2.WND_PROP_TOPMOST, 1)
         cv2.imshow("image", img)
-        cv2.resizeWindow('image', 300,300)
+        cv2.resizeWindow('image', 600, 500)
         cv2.waitKey(1)
 
 
